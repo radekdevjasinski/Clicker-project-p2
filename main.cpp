@@ -3,8 +3,6 @@
 #include<ctime>
 #include<stdlib.h>
 #include<windows.h>
-#include<future>
-#include<chrono>
 #include<list>
 using namespace std;
 class Job {
@@ -14,6 +12,8 @@ public:
     int level;
     int maxLevel;
     int price;
+    int startTime;
+    int endTime;
     Job(string name_, string desc_, int level_, int maxLevel_, int price_) {
         name = name_;
         desc = desc_;
@@ -22,23 +22,6 @@ public:
         price = price_;
     }
 };
-class Timer {
-public:
-    unsigned long int time;
-    Timer() {
-        time = 0;
-    }
-}timer;
-void startTimer() {
-    timer.time = 0;
-    cout << "Start\n";
-    for (;;)
-    {
-        timer.time++;
-        cout << timer.time << '\n';
-        this_thread::sleep_for(chrono::seconds(1));
-    }
-}
 class Game {
 public:
     list<Job> jobs;
@@ -79,10 +62,8 @@ public:
     }
 }game;
 int main() {
-    auto future = async(startTimer);
     for (;;) {
         game.Menu();
-        //cout << timer.time;
         cin.ignore();
         game.ClearScreen();
     }
