@@ -46,7 +46,7 @@ public:
     }
     void Menu() {
         cout << "IT CAPITALIST" << endl;
-        cout << "CASH: " << endl;
+        cout << "CASH: " << money.WriteMoney() << endl;
         for (it = jobs.begin(); it != jobs.end(); ++it)
         {
             cout << it->name << endl;
@@ -61,6 +61,30 @@ public:
         cout << string(100, '\n');
     }
 }game;
+class Money
+{
+public:
+    int cash, count = 0, d = 1;
+    string WriteMoney() {
+        int num = cash;
+        string str = "";
+        while (cash) {
+            cash /= 10;
+            count++;
+            if (cash) d *= 10;
+        }
+        cash = num;
+
+        while (num) {
+            if (count-- % 3 == 0 and cash != num) str += ",";
+
+            str += to_string(num/d);
+            num %= d;
+            d /= 10;
+        }
+        return str;
+    }
+}money;
 int main() {
     for (;;) {
         game.Menu();
@@ -68,4 +92,5 @@ int main() {
         game.ClearScreen();
     }
     return 0;
+
 }
