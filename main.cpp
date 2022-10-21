@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<windows.h>
 #include<list>
+#include<string>
 using namespace std;
 class Job {
 public:
@@ -22,6 +23,33 @@ public:
         price = price_;
     }
 };
+class Money
+{
+public:
+    int cash;
+    Money() {
+        cash = 1;
+    }
+    string WriteMoney() {
+        int num = cash, count = 0, d = 1;
+        string str = "";
+        while (cash) {
+            cash /= 10;
+            count++;
+            if (cash) d *= 10;
+        }
+        cash = num;
+
+        while (num) {
+            if (count-- % 3 == 0 and cash != num) str += ",";
+
+            str += to_string(num / d);
+            num %= d;
+            d /= 10;
+        }
+        return str;
+    }
+}money;
 class Game {
 public:
     list<Job> jobs;
@@ -46,14 +74,14 @@ public:
     }
     void Menu() {
         cout << "IT CAPITALIST" << endl;
-        cout << "CASH: " << money.WriteMoney() << endl;
+        cout << "CASH: " << money.WriteMoney() << " CPU's " << endl;
         for (it = jobs.begin(); it != jobs.end(); ++it)
         {
             cout << it->name << endl;
             cout << it->desc << endl;
-            cout <<"CENA: " << it->price << endl;
-            cout << "CZAS: " << "[-------------]" << endl;
-            cout << "POZIOM: " << it->level << " / " << it->maxLevel << endl << endl;
+            cout <<"PRICE: " << it->price << endl;
+            cout << "TIME: " << "[-------------]" << endl;
+            cout << "LEVEL: " << it->level << " / " << it->maxLevel << endl << endl;
         }
     }
     void ClearScreen()
@@ -61,30 +89,7 @@ public:
         cout << string(100, '\n');
     }
 }game;
-class Money
-{
-public:
-    int cash, count = 0, d = 1;
-    string WriteMoney() {
-        int num = cash;
-        string str = "";
-        while (cash) {
-            cash /= 10;
-            count++;
-            if (cash) d *= 10;
-        }
-        cash = num;
 
-        while (num) {
-            if (count-- % 3 == 0 and cash != num) str += ",";
-
-            str += to_string(num/d);
-            num %= d;
-            d /= 10;
-        }
-        return str;
-    }
-}money;
 int main() {
     for (;;) {
         game.Menu();
