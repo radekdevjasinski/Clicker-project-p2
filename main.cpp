@@ -15,26 +15,6 @@ public:
     {
         cash = 1;
     }
-    string WriteMoney() 
-    {
-        int num = cash, count = 0, d = 1;
-        string str = "";
-        while (cash) {
-            cash /= 10;
-            count++;
-            if (cash) d *= 10;
-        }
-        cash = num;
-
-        while (num) {
-            if (count-- % 3 == 0 and cash != num) str += ",";
-
-            str += to_string(num / d);
-            num %= d;
-            d /= 10;
-        }
-        return str;
-    }
     void MoneyAdd(int cash_) 
     {
         cash += cash_;
@@ -73,12 +53,16 @@ public:
         if (!isLocked)
         {
             int currentTime = time(NULL);
-            int CirclesDoneInt = (currentTime - startTime) / secondsToGo;
-            float CirclesDoneFloat = (currentTime - startTime) % secondsToGo;
+            
+            int secondsPassed = (currentTime - startTime);
+            int CirclesDoneInt = secondsPassed / secondsToGo;
+            float CirclesDoneFloat = secondsPassed % secondsToGo;
+            int secondsSpare = secondsPassed - CirclesDoneInt * secondsToGo;
+            
             if (CirclesDoneInt >= 1)
             {
                 money.MoneyAdd(reward * CirclesDoneInt);
-                startTime = currentTime;
+                startTime = currentTime - secondsSpare;
             }
             timeToShow = (float)(CirclesDoneFloat / secondsToGo);
         }
@@ -109,7 +93,7 @@ public:
     }
     void Menu() {
         cout << "IT CAPITALIST \n";
-        cout << "CASH: " << money.WriteMoney() << " CPU's \n\n";
+        cout << "CASH: " << money.cash << " CPU's \n\n";
         for (it = jobs.begin(); it != jobs.end(); ++it)
         {
             cout << it->name << endl;
