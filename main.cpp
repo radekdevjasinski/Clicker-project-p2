@@ -14,15 +14,30 @@ public:
     int level;
     int maxLevel;
     int price;
+    int reward;
     time_t startTime;
     int secondsToGo;
-    Job(string name_, string desc_, int level_, int maxLevel_, int price_, bool isLocked_) {
+    Job(string name_, string desc_, int level_, int maxLevel_, int price_, int reward_, bool isLocked_) {
         name = name_;
         desc = desc_;
         level = level_;
         maxLevel = maxLevel_;
         price = price_;
         isLocked = isLocked_;
+        reward = reward_;
+    }
+    void StartWorking() 
+    {
+        startTime = time(NULL);
+    }
+    void CheckWorkDone()
+    {
+        int CirclesDoneInt = (time(NULL) - startTime) / secondsToGo;
+        float CirclesDoneFloat = (time(NULL) - startTime) / secondsToGo - CirclesDoneInt;
+        if (CirclesDoneInt > 1)
+        {
+            
+        }
     }
 };
 class Money
@@ -51,19 +66,23 @@ public:
         }
         return str;
     }
+    void MoneyAdd(int cash_) 
+    {
+        cash = cash_;
+    }
 }money;
 class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500, false);
-    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, true);
-    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, true);
-    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, true);
-    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, true);
-    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, true);
-    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, true);
-    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, true);
+    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500, 1, false);
+    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, 1, true);
+    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, 1, true);
+    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, 1, true);
+    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, 1, true);
+    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, 1, true);
+    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, 1, true);
+    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, 1, true);
     Game() {
         jobs.push_back(j1);
         jobs.push_back(j2);
