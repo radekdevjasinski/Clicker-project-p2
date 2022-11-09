@@ -37,7 +37,7 @@ public:
     }
     void MoneyAdd(int cash_) 
     {
-        cash = cash_;
+        cash += cash_;
     }
 }money;
 class Job {
@@ -62,6 +62,7 @@ public:
         reward = reward_;
         secondsToGo = secondsToGo_;
         timeToShow = 0;
+        StartWorking();
     }
     void StartWorking() 
     {
@@ -71,13 +72,13 @@ public:
     {
         if (!isLocked)
         {
-            cout << startTime;
-            int CirclesDoneInt = (time(NULL) - startTime) / secondsToGo;
-            float CirclesDoneFloat = (time(NULL) - startTime) / secondsToGo - CirclesDoneInt;
+            int currentTime = time(NULL);
+            int CirclesDoneInt = (currentTime - startTime) / secondsToGo;
+            float CirclesDoneFloat = (currentTime - startTime) % secondsToGo;
             if (CirclesDoneInt >= 1)
             {
                 money.MoneyAdd(reward * CirclesDoneInt);
-                startTime += CirclesDoneInt * secondsToGo;
+                startTime = currentTime;
             }
             timeToShow = (float)(CirclesDoneFloat / secondsToGo);
         }
@@ -118,7 +119,6 @@ public:
                 cout << "PRICE: " << it->price << endl;
                 cout << "TIME: " << it->timeToShow << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
-                it->StartWorking();
             }
             else
             {
