@@ -10,17 +10,19 @@ class Job {
 public:
     string name;
     string desc;
+    bool isLocked;
     int level;
     int maxLevel;
     int price;
-    int startTime;
-    int endTime;
-    Job(string name_, string desc_, int level_, int maxLevel_, int price_) {
+    time_t startTime;
+    int secondsToGo;
+    Job(string name_, string desc_, int level_, int maxLevel_, int price_, bool isLocked_) {
         name = name_;
         desc = desc_;
         level = level_;
         maxLevel = maxLevel_;
         price = price_;
+        isLocked = isLocked_;
     }
 };
 class Money
@@ -54,14 +56,14 @@ class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500);
-    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500);
-    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500);
-    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500);
-    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500);
-    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500);
-    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500);
-    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500);
+    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500, false);
+    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, true);
+    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, true);
+    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, true);
+    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, true);
+    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, true);
+    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, true);
+    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, true);
     Game() {
         jobs.push_back(j1);
         jobs.push_back(j2);
@@ -73,15 +75,23 @@ public:
         jobs.push_back(j8);
     }
     void Menu() {
-        cout << "IT CAPITALIST" << endl;
-        cout << "CASH: " << money.WriteMoney() << " CPU's " << endl;
+        cout << "IT CAPITALIST \n";
+        cout << "CASH: " << money.WriteMoney() << " CPU's \n\n";
         for (it = jobs.begin(); it != jobs.end(); ++it)
         {
             cout << it->name << endl;
             cout << it->desc << endl;
-            cout <<"PRICE: " << it->price << endl;
-            cout << "TIME: " << "[--------------]" << endl;
-            cout << "LEVEL: " << it->level << " / " << it->maxLevel << endl << endl;
+            if (!it->isLocked)
+            {
+                cout << "PRICE: " << it->price << endl;
+                cout << "TIME: " << "[--------------]" << endl;
+                cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
+            }
+            else
+            {
+               cout << "LOCKED\n\n";
+            }
+            
         }
     }
     void ClearScreen()
@@ -91,10 +101,12 @@ public:
 }game;
 
 int main() {
+    time_t czas = time(NULL);
     for (;;) {
         game.Menu();
         cin.ignore();
         game.ClearScreen();
+        cout << time(NULL) - czas;
     }
     return 0;
 
