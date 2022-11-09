@@ -5,6 +5,7 @@
 #include<windows.h>
 #include<list>
 #include<string>
+#include <limits>
 using namespace std;
 class Money
 {
@@ -110,10 +111,10 @@ public:
             
         }
     }
-    void CheatCodesGame()
+    void CheatCodesGame(string code)
     {
         string codes[] = { "AllDone", "UnlockAll", "FirstDay" };
-        if ("AllDone" == codes[0]) 
+        if (code == codes[0]) 
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
@@ -123,7 +124,7 @@ public:
 
             }
         }
-        else if ("UnlockAll" == codes[1])
+        else if (code == codes[1])
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
@@ -135,7 +136,7 @@ public:
                 }
             }
         }
-        else if ("FirstDay")
+        else if (code == "FirstDay")
         {
             jobs.begin()->level = 500;
         }
@@ -156,9 +157,12 @@ public:
 }game;
 
 int main() {
+    string cheats;
     for (;;) {
         game.Menu();
-        cin.ignore();
+        cin >> cheats;
+        if (cin.get() != '\n')   
+            game.CheatCodesGame(cheats);      
         game.ClearScreen();
         game.CheckWorkDone();
     }
