@@ -66,16 +66,21 @@ public:
     {
         startTime = time(NULL);
     }
-    void CheckWorkDone(Money money)
+    void CheckWorkDone()
     {
-        int CirclesDoneInt = (time(NULL) - startTime) / secondsToGo;
-        float CirclesDoneFloat = (time(NULL) - startTime) / secondsToGo - CirclesDoneInt;
-        if (CirclesDoneInt >= 1)
+        if (!isLocked)
         {
-            money.MoneyAdd(reward * CirclesDoneInt);
-            startTime += CirclesDoneInt * secondsToGo;
+            cout << startTime;
+            int CirclesDoneInt = (time(NULL) - startTime) / secondsToGo;
+            float CirclesDoneFloat = (time(NULL) - startTime) / secondsToGo - CirclesDoneInt;
+            if (CirclesDoneInt >= 1)
+            {
+                money.MoneyAdd(reward * CirclesDoneInt);
+                startTime += CirclesDoneInt * secondsToGo;
+            }
+            timeToShow = (float)(CirclesDoneFloat / secondsToGo);
         }
-        timeToShow = CirclesDoneFloat / secondsToGo;
+        
     }
 };
 class Game {
@@ -161,7 +166,7 @@ public:
     {
         for (it = jobs.begin(); it != jobs.end(); ++it)
         {
-            it->CheckWorkDone(money);
+            it->CheckWorkDone();
         }
     }
 }game;
