@@ -51,7 +51,7 @@ public:
     time_t startTime;
     int secondsToGo;
     float timeToShow;
-    Job(string name_, string desc_, int level_, int maxLevel_, int price_, int reward_, bool isLocked_) {
+    Job(string name_, string desc_, int level_, int maxLevel_, int price_, int reward_,int secondsToGo_, bool isLocked_) {
         name = name_;
         desc = desc_;
         level = level_;
@@ -59,6 +59,7 @@ public:
         price = price_;
         isLocked = isLocked_;
         reward = reward_;
+        secondsToGo = secondsToGo_;
         timeToShow = 0;
     }
     void StartWorking() 
@@ -81,14 +82,14 @@ class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500, 1, false);
-    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, 1, true);
-    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, 1, true);
-    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, 1, true);
-    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, 1, true);
-    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, 1, true);
-    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, 1, true);
-    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, 1, true);
+    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500, 1, 5, false);
+    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, 1, 5, true);
     Game() {
         jobs.push_back(j1);
         jobs.push_back(j2);
