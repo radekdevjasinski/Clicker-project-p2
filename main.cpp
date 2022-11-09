@@ -66,6 +66,10 @@ public:
         }
         return str;
     }
+    void MoneyAdd(int cash_) 
+    {
+        cash = cash_;
+    }
 }money;
 class Game {
 public:
