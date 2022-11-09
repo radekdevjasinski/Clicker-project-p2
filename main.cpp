@@ -80,7 +80,7 @@ public:
             cout << it->name << endl;
             cout << it->desc << endl;
             cout <<"PRICE: " << it->price << endl;
-            cout << "TIME: " << "[-------------]" << endl;
+            cout << "TIME: " << "[--------------]" << endl;
             cout << "LEVEL: " << it->level << " / " << it->maxLevel << endl << endl;
         }
     }
