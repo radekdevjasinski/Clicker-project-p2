@@ -177,8 +177,7 @@ int main() {
     for (;;) {
         game.Menu();
         cin >> cheats;
-        if (cin.get() != '\n')   
-            game.CheatCodesGame(cheats);      
+        game.CheatCodesGame(cheats);      
         game.ClearScreen();
         game.CheckWorkDone();
     }
