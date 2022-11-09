@@ -120,6 +120,38 @@ public:
             
         }
     }
+    void CheatCodesGame()
+    {
+        string codes[] = { "AllDone", "UnlockAll", "FirstDay" };
+        if ("AllDone" == codes[0]) 
+        {
+            for (it = jobs.begin(); it != jobs.end(); ++it)
+            {
+                   it->isLocked = false;
+                   //it->price;
+                   it->level = 100;
+
+            }
+        }
+        else if ("UnlockAll" == codes[1])
+        {
+            for (it = jobs.begin(); it != jobs.end(); ++it)
+            {
+                if (it->isLocked)
+                {
+                    it->isLocked = false;
+                    //it->price;
+                    it->level = 1;
+                }
+            }
+        }
+        else if ("FirstDay")
+        {
+            jobs.begin()->level = 500;
+        }
+        
+    }
+
     void ClearScreen()
     {
         cout << string(100, '\n');
