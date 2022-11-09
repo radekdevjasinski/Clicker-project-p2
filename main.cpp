@@ -6,48 +6,16 @@
 #include<list>
 #include<string>
 using namespace std;
-class Job {
-public:
-    string name;
-    string desc;
-    bool isLocked;
-    int level;
-    int maxLevel;
-    int price;
-    int reward;
-    time_t startTime;
-    int secondsToGo;
-    Job(string name_, string desc_, int level_, int maxLevel_, int price_, int reward_, bool isLocked_) {
-        name = name_;
-        desc = desc_;
-        level = level_;
-        maxLevel = maxLevel_;
-        price = price_;
-        isLocked = isLocked_;
-        reward = reward_;
-    }
-    void StartWorking() 
-    {
-        startTime = time(NULL);
-    }
-    void CheckWorkDone()
-    {
-        int CirclesDoneInt = (time(NULL) - startTime) / secondsToGo;
-        float CirclesDoneFloat = (time(NULL) - startTime) / secondsToGo - CirclesDoneInt;
-        if (CirclesDoneInt > 1)
-        {
-            
-        }
-    }
-};
 class Money
 {
 public:
     int cash;
-    Money() {
+    Money() 
+    {
         cash = 1;
     }
-    string WriteMoney() {
+    string WriteMoney() 
+    {
         int num = cash, count = 0, d = 1;
         string str = "";
         while (cash) {
@@ -71,6 +39,44 @@ public:
         cash = cash_;
     }
 }money;
+class Job {
+public:
+    string name;
+    string desc;
+    bool isLocked;
+    int level;
+    int maxLevel;
+    int price;
+    int reward;
+    time_t startTime;
+    int secondsToGo;
+    float timeToShow;
+    Job(string name_, string desc_, int level_, int maxLevel_, int price_, int reward_, bool isLocked_) {
+        name = name_;
+        desc = desc_;
+        level = level_;
+        maxLevel = maxLevel_;
+        price = price_;
+        isLocked = isLocked_;
+        reward = reward_;
+        timeToShow = 0;
+    }
+    void StartWorking() 
+    {
+        startTime = time(NULL);
+    }
+    void CheckWorkDone(Money money)
+    {
+        int CirclesDoneInt = (time(NULL) - startTime) / secondsToGo;
+        float CirclesDoneFloat = (time(NULL) - startTime) / secondsToGo - CirclesDoneInt;
+        if (CirclesDoneInt >= 1)
+        {
+            money.MoneyAdd(reward * CirclesDoneInt);
+            startTime += CirclesDoneInt * secondsToGo;
+        }
+        timeToShow = CirclesDoneFloat / secondsToGo;
+    }
+};
 class Game {
 public:
     list<Job> jobs;
@@ -103,8 +109,9 @@ public:
             if (!it->isLocked)
             {
                 cout << "PRICE: " << it->price << endl;
-                cout << "TIME: " << "[--------------]" << endl;
+                cout << "TIME: " << it->timeToShow << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
+                it->StartWorking();
             }
             else
             {
@@ -117,15 +124,21 @@ public:
     {
         cout << string(100, '\n');
     }
+    void CheckWorkDone() 
+    {
+        for (it = jobs.begin(); it != jobs.end(); ++it)
+        {
+            it->CheckWorkDone(money);
+        }
+    }
 }game;
 
 int main() {
-    time_t czas = time(NULL);
     for (;;) {
         game.Menu();
         cin.ignore();
         game.ClearScreen();
-        cout << time(NULL) - czas;
+        game.CheckWorkDone();
     }
     return 0;
 
