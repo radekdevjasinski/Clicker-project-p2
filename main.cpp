@@ -160,8 +160,11 @@ int main() {
     string cheats;
     for (;;) {
         game.Menu();
-        cin >> cheats;
-        game.CheatCodesGame(cheats);      
+        do {
+            cout << "Press ENTER to exit" << endl;
+            getline(cin, cheats);
+            game.CheatCodesGame(cheats);      
+        } while (cheats.length() != 0);
         game.ClearScreen();
         game.CheckWorkDone();
     }
