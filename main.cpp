@@ -161,7 +161,7 @@ int main() {
     for (;;) {
         game.Menu();
         do {
-            cout << "Press ENTER to exit" << endl;
+            cout << "Press ENTER" << endl;
             getline(cin, cheats);
             game.CheatCodesGame(cheats);      
         } while (cheats.length() != 0);
