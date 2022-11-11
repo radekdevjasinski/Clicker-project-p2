@@ -163,8 +163,8 @@ public:
                    }
                    it->level = 20;
                    it->LevelUp();
-                   cout << "\nCheated\n" << endl;
             }
+            cout << "\nCheated\n" << endl;
         }
         else if (code == cheatCodes[1])
         {
@@ -203,7 +203,7 @@ public:
                         if (it->level == -1)
                         {
                             it->startTime = time(NULL);
-                            cout << "\nWlasnie kupiles " << number + 1 << " interes!\n" << endl;
+                            cout << "\nYou just bought " << number + 1 << " business!\n" << endl;
                         }
                         else{
                             cout << "\nWlasnie ulepszyles " << number + 1 << " interes!\n" << endl;
@@ -236,9 +236,10 @@ int main() {
     for (;;) {
         game.Menu();
         do {
-            cout << "Press ENTER" << endl;
+            cout << "To buy/upgrade a business type: buy (number of business)" << endl;
+            cout << "or \nPress ENTER to reload" << endl;
             getline(cin, command);
-            game.Commands(command);      
+            game.Commands(command);
         } while (command.length() != 0);
         game.ClearScreen();
         game.CheckWorkDone();
