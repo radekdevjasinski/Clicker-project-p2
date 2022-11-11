@@ -1,19 +1,24 @@
 #include<cstdio>
 #include<iostream>
 #include<ctime>
+#include<cmath>
 #include<stdlib.h>
 #include<windows.h>
 #include<list>
 #include<string>
-#include <limits>
+#include<limits>
 using namespace std;
+int roundToInt(float value)
+{
+    return (int)(value + 0.5);
+}
 class Money
 {
 public:
     int cash;
     Money() 
     {
-        cash = 1;
+        cash = 5;
     }
     void MoneyAdd(int cash_) 
     {
@@ -24,63 +29,83 @@ class Job {
 public:
     string name;
     string desc;
-    bool isLocked;
+
     int level;
     int maxLevel;
-    int price;
-    int reward;
+    float price;
+    float reward;
+
     time_t startTime;
-    int secondsToGo;
+    float seconds;
     float timeToShow;
-    Job(string name_, string desc_, int level_, int maxLevel_, int price_, int reward_,int secondsToGo_, bool isLocked_) {
+
+    float priceStart;
+    float rewardStart;
+    float secondsStart;
+
+    float priceEnd;
+    float rewardEnd;
+    float secondsEnd;
+
+    Job(string name_, string desc_, float price_, float reward_, float seconds_, float priceEnd_, float rewardEnd_, float secondsEnd_)
+    {
         name = name_;
         desc = desc_;
-        level = level_;
-        maxLevel = maxLevel_;
+        
+        level = -1;
+        maxLevel = 20;
         price = price_;
-        isLocked = isLocked_;
+        
         reward = reward_;
-        secondsToGo = secondsToGo_;
+        seconds = seconds_;
         timeToShow = 0;
-        StartWorking();
-    }
-    void StartWorking() 
-    {
-        startTime = time(NULL);
+
+        priceStart = price;
+        rewardStart = reward;
+        secondsStart = seconds;
+
+        priceEnd = priceEnd_;
+        rewardEnd = rewardEnd_;
+        secondsEnd = secondsEnd_;
     }
     void CheckWorkDone()
     {
-        if (!isLocked)
+        if (level>=0)
         {
             int currentTime = time(NULL);
-            
+
             int secondsPassed = (currentTime - startTime);
-            int CirclesDoneInt = secondsPassed / secondsToGo;
-            float CirclesDoneFloat = secondsPassed % secondsToGo;
-            int secondsSpare = secondsPassed - CirclesDoneInt * secondsToGo;
-            
+            int CirclesDoneInt = secondsPassed / roundToInt(seconds);
+            float CirclesDoneFloat = secondsPassed % roundToInt(seconds);
+            int secondsSpare = secondsPassed - CirclesDoneInt * roundToInt(seconds);
             if (CirclesDoneInt >= 1)
             {
-                money.MoneyAdd(reward * CirclesDoneInt);
+                money.MoneyAdd(roundToInt(reward) * CirclesDoneInt);
                 startTime = currentTime - secondsSpare;
             }
-            timeToShow = (float)(CirclesDoneFloat / secondsToGo);
+            timeToShow = (float)(CirclesDoneFloat / roundToInt(seconds));
         }
         
+    }
+    void LevelUp() 
+    {
+        price = priceStart + ((priceEnd - priceStart) / maxLevel) * level;
+        reward = rewardStart + ((rewardEnd - rewardStart) / maxLevel) * level;
+        seconds = secondsStart - ((secondsStart - secondsEnd) / maxLevel) * level;
     }
 };
 class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500, 1, 5, false);
-    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 2, 1, 5, 20, 20, 1);
+    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10, 100, 20, 5);
+    Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30, 250, 100, 15);
+    Job j4 = Job("Service assistant", "Pracujesz w serwisie u wujka", 100, 25, 45, 500, 150, 27);
+    Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60, 1000, 500, 35);
+    Job j6 = Job("Unity designer", "Robisz podrobki gier, tyko gorzej", 2000, 500, 75, 6000, 1500, 55);
+    Job j7 = Job("Bitcoin trader", "Kopiesz bitcoina na starym laptopie babci", 10000, 1000, 90, 60000, 3000, 75);
+    Job j8 = Job("Owner of twitter", "Przywracasz wolnosc slowa", 100000, 10000, 120, 500000, 300000, 90);
     Game() {
         jobs.push_back(j1);
         jobs.push_back(j2);
@@ -91,6 +116,18 @@ public:
         jobs.push_back(j7);
         jobs.push_back(j8);
     }
+    string LoadingBar(float time) {
+        string loading = "----------", hasz = "";
+        int y =0;
+
+        for (int i = 1; i <= time*10; i ++)
+        {
+            y++;
+            hasz.append("#");   
+        }
+        loading.replace(0, y, hasz);
+        return loading;
+    }
     void Menu() {
         cout << "IT CAPITALIST \n";
         cout << "CASH: " << money.cash << " CPU's \n\n";
@@ -98,51 +135,86 @@ public:
         {
             cout << it->name << endl;
             cout << it->desc << endl;
-            if (!it->isLocked)
+            if (it->level!=-1)
             {
-                cout << "PRICE: " << it->price << endl;
-                cout << "TIME: " << it->timeToShow << endl;
+                cout << "PRICE: " << roundToInt(it->price) << endl;
+                cout << "REWARD: " << roundToInt(it->reward)<< endl;
+                cout << "TIME: (" << roundToInt(it->seconds) << "s) [" << LoadingBar(it->timeToShow) << "]" << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
             }
             else
             {
-               cout << "LOCKED\n\n";
+               cout << "LOCKED\n";
+               cout << "PRICE: " << roundToInt(it->price) << "\n\n";
             }
             
         }
     }
-    void CheatCodesGame(string code)
+    void Commands(string code)
     {
-        string codes[] = { "AllDone", "UnlockAll", "FirstDay" };
-        if (code == codes[0]) 
+        string cheatCodes[] = { "alldone", "unlockall", "firstday" };
+        if (code == cheatCodes[0])
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                   it->isLocked = false;
-                   //it->price;
-                   it->level = 100;
-
+                   if (it->level==-1)
+                   {
+                        it->startTime = time(NULL);
+                   }
+                   it->level = 20;
+                   it->LevelUp();
             }
+            cout << "\nCheated\n" << endl;
         }
-        else if (code == codes[1])
+        else if (code == cheatCodes[1])
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                if (it->isLocked)
+                if (it->level == -1)
                 {
-                    it->isLocked = false;
-                    //it->price;
-                    it->level = 1;
+                    it->level = 0;
+                    it->LevelUp();
+                    it->startTime = time(NULL);
+                    cout << "\nCheated\n" << endl;
                 }
             }
         }
-        else if (code == "FirstDay")
+        else if (code == cheatCodes[2])
         {
-            jobs.begin()->level = 500;
+            if (jobs.begin()->level == -1)
+            {
+                jobs.begin()->startTime = time(NULL);
+            }
+            it->level = 20;
+            jobs.begin()->LevelUp();
+            cout << "\nCheated\n" << endl;
         }
-        
+        else if (code.substr(0, 3) == "buy") 
+        {
+            char index = code.back();
+            int number = index - '1';
+            int i = 0;
+            for (it = jobs.begin(); it != jobs.end(); ++it)
+            {
+                if (i == number)
+                {
+                    if (money.cash >= it->price && it->level+1 <= it->maxLevel)
+                    {
+                        if (it->level == -1)
+                        {
+                            it->startTime = time(NULL);
+                        }
+                        money.cash -= roundToInt(it->price);
+                        it->level++;
+                        it->LevelUp();
+                        cout << "\nYou just bought " << number + 1 << " business!\n" << endl;
+                    }
+                }
+                i++;
+            }
+            
+        }
     }
-
     void ClearScreen()
     {
         cout << string(100, '\n');
@@ -157,14 +229,15 @@ public:
 }game;
 
 int main() {
-    string cheats;
+    string command;
     for (;;) {
         game.Menu();
         do {
-            cout << "Press ENTER" << endl;
-            getline(cin, cheats);
-            game.CheatCodesGame(cheats);      
-        } while (cheats.length() != 0);
+            cout << "To buy/upgrade a business type: buy (number of business)" << endl;
+            cout << "or \nPress ENTER to reload" << endl;
+            getline(cin, command);
+            game.Commands(command);
+        } while (command.length() != 0);
         game.ClearScreen();
         game.CheckWorkDone();
     }
