@@ -141,13 +141,10 @@ public:
             int i = 0;
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                cout << number << "," << i<<endl;
                 if (i == number)
                 {
-                    cout << "upgraded";
                     if (money.cash >= it->price)
                     {
-                        cout << "upgraded2";
                         it->level += 1;
                         money.cash -= it->price;
                     }
