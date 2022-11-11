@@ -1,7 +1,7 @@
 #include<cstdio>
 #include<iostream>
 #include<ctime>
-#include <cmath>
+#include<cmath>
 #include<stdlib.h>
 #include<windows.h>
 #include<list>
