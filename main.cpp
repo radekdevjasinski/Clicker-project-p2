@@ -6,7 +6,7 @@
 #include<windows.h>
 #include<list>
 #include<string>
-#include <limits>
+#include<limits>
 using namespace std;
 class Money
 {
@@ -25,36 +25,41 @@ class Job {
 public:
     string name;
     string desc;
+
     int level;
     int maxLevel;
     int price;
     int reward;
+
     time_t startTime;
     int secondsToGo;
     float timeToShow;
-    Job(string name_, string desc_, int price_, int reward_,int secondsToGo_) {
-        level = 0;
-        maxLevel = 20;
+
+    float rewardFactor;
+    float secondsFactor;
+
+    Job(string name_, string desc_, int price_, int reward_,int secondsToGo_, float rewardFactor_, float secondsFactor_) 
+    {
         name = name_;
         desc = desc_;
+        
+        level = 0;
+        maxLevel = 20;
         price = price_;
+        
         reward = reward_;
         secondsToGo = secondsToGo_;
         timeToShow = 0;
-    }
-    void StartWork() 
-    {
-        if (level > 0)
-        {
-            startTime = time(NULL);
-        }
+
+        rewardFactor = rewardFactor_;
+        secondsFactor = secondsFactor_;
     }
     void CheckWorkDone()
     {
         if (level!=0)
         {
             int currentTime = time(NULL);
-            
+
             int secondsPassed = (currentTime - startTime);
             int CirclesDoneInt = secondsPassed / secondsToGo;
             float CirclesDoneFloat = secondsPassed % secondsToGo;
@@ -74,14 +79,14 @@ class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 1, 1, 5);
-    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10);
-    Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30);
-    Job j4 = Job("Service assistant", "Pracujesz w serwisie u wujka", 100, 25, 45);
-    Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60);
-    Job j6 = Job("Unity designer", "Robisz podrobki gier, tyko gorzej", 2000, 500, 75);
-    Job j7 = Job("Bitcoin trader", "Kopiesz bitcoina na starym laptopie babci", 10000, 1000, 90);
-    Job j8 = Job("Owner of twitter", "Przywracasz wolnosc slowa", 100000, 10000, 120);
+    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 1, 1, 5, 1, 1);
+    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10, 1, 1);
+    Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30, 1, 1);
+    Job j4 = Job("Service assistant", "Pracujesz w serwisie u wujka", 100, 25, 45, 1, 1);
+    Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60, 1, 1);
+    Job j6 = Job("Unity designer", "Robisz podrobki gier, tyko gorzej", 2000, 500, 75, 1, 1);
+    Job j7 = Job("Bitcoin trader", "Kopiesz bitcoina na starym laptopie babci", 10000, 1000, 90, 1, 1);
+    Job j8 = Job("Owner of twitter", "Przywracasz wolnosc slowa", 100000, 10000, 120, 1, 1);
     Game() {
         jobs.push_back(j1);
         jobs.push_back(j2);
@@ -99,8 +104,7 @@ public:
         for (int i = 1; i <= time*10; i ++)
         {
             y++;
-            hasz.append("#");
-            
+            hasz.append("#");   
         }
         loading.replace(0, y, hasz);
         return loading;
@@ -134,8 +138,11 @@ public:
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                   it->level = 100;
-                   it->StartWork();
+                   if (it->level==0)
+                   {
+                        it->startTime = time(NULL);
+                   }
+                   it->level = 20;
             }
         }
         else if (code == cheatCodes[1])
@@ -145,14 +152,17 @@ public:
                 if (it->level == 0)
                 {
                     it->level = 1;
-                    it->StartWork();
+                    it->startTime = time(NULL);
                 }
             }
         }
         else if (code == cheatCodes[2])
         {
-            jobs.begin()->level = 500;
-            jobs.begin()->StartWork();
+            if (jobs.begin()->level == 0)
+            {
+                jobs.begin()->startTime = time(NULL);
+            }
+            jobs.begin()->level = 20;
         }
         else if (code.substr(0, 3) == "buy") 
         {
@@ -165,12 +175,14 @@ public:
                 {
                     if (money.cash >= it->price)
                     {
+                        cout << money.cash;
                         if (it->level == 0)
                         {
-                            it->StartWork();
+                            it->startTime = time(NULL);
                         }
                         it->level += 1;
                         money.cash -= it->price;
+                        cout << money.cash;
                     }
                 }
                 i++;
