@@ -178,7 +178,6 @@ public:
                 {
                     if (money.cash >= it->price)
                     {
-                        cout << money.cash;
                         if (it->level == 0)
                         {
                             it->startTime = time(NULL);
@@ -189,7 +188,6 @@ public:
                         }
                         it->level += 1;
                         money.cash -= it->price;
-                        cout << money.cash;
                     }
                 }
                 i++;
@@ -215,9 +213,10 @@ int main() {
     for (;;) {
         game.Menu();
         do {
-            cout << "Press ENTER" << endl;
+            cout << "To buy/upgrade a business type: buy (number of business)" << endl;
+            cout << "or \nPress ENTER to reload" << endl;
             getline(cin, command);
-            game.Commands(command);      
+            game.Commands(command);
         } while (command.length() != 0);
         game.ClearScreen();
         game.CheckWorkDone();
