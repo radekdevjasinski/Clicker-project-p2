@@ -40,11 +40,6 @@ public:
         reward = reward_;
         secondsToGo = secondsToGo_;
         timeToShow = 0;
-        StartWorking();
-    }
-    void StartWorking() 
-    {
-        startTime = time(NULL);
     }
     void CheckWorkDone()
     {
@@ -99,12 +94,14 @@ public:
             if (it->level!=0)
             {
                 cout << "PRICE: " << it->price << endl;
+                cout << "REWARD: " << it->reward << endl;
                 cout << "TIME: " << it->timeToShow << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
             }
             else
             {
-               cout << "LOCKED\n\n";
+               cout << "LOCKED\n";
+               cout << "PRICE: " << it->price << "\n\n";
             }
             
         }
@@ -145,6 +142,10 @@ public:
                 {
                     if (money.cash >= it->price)
                     {
+                        if (it->level == 0)
+                        {
+                            it->startTime = time(NULL);
+                        }
                         it->level += 1;
                         money.cash -= it->price;
                     }
