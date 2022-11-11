@@ -71,23 +71,23 @@ class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Biznes1", "Zwykly biznes", 1, 1, 5);
-    /*Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, 1, 5, true);*/
+    Job j1 = Job("Dropshiping", "Kupuj taniej sprzedaj drozej", 1, 1, 5);
+    Job j2 = Job("Webmaster", "Tworzenie slabych stron na wordpressie", 20, 5, 10);
+    Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30);
+    Job j4 = Job("Service assistant", "Praca w serwisie", 100, 25, 45);
+    Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60);
+    Job j6 = Job("Unity designer", "Robisz podrobki gier, tyko gorzej", 2000, 500, 75);
+    Job j7 = Job("Bitcoin trader", "Kopiesz bitcoina na starym laptopie babci", 10000, 1000, 90);
+    Job j8 = Job("Owner of twitter", "Przywracasz wolnosc slowa", 100000, 10000, 120);
     Game() {
         jobs.push_back(j1);
-        /*jobs.push_back(j2);
+        jobs.push_back(j2);
         jobs.push_back(j3);
         jobs.push_back(j4);
         jobs.push_back(j5);
         jobs.push_back(j6);
         jobs.push_back(j7);
-        jobs.push_back(j8);*/
+        jobs.push_back(j8);
     }
     void Menu() {
         cout << "IT CAPITALIST \n";
