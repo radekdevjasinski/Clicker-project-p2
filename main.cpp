@@ -114,12 +114,14 @@ public:
             if (it->level!=0)
             {
                 cout << "PRICE: " << it->price << endl;
+                cout << "REWARD: " << it->reward << endl;
                 cout << "TIME: (" << it->secondsToGo << "s) [" << LoadingBar(it->timeToShow) << "]" << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
             }
             else
             {
-               cout << "LOCKED\n\n";
+               cout << "LOCKED\n";
+               cout << "PRICE: " << it->price << "\n\n";
             }
             
         }
