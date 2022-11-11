@@ -41,11 +41,6 @@ public:
         reward = reward_;
         secondsToGo = secondsToGo_;
         timeToShow = 0;
-        StartWorking();
-    }
-    void StartWorking() 
-    {
-        startTime = time(NULL);
     }
     void CheckWorkDone()
     {
@@ -162,6 +157,10 @@ public:
                 {
                     if (money.cash >= it->price)
                     {
+                        if (it->level == 0)
+                        {
+                            it->startTime = time(NULL);
+                        }
                         it->level += 1;
                         money.cash -= it->price;
                     }
