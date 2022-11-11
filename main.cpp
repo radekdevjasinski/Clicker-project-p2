@@ -24,7 +24,6 @@ class Job {
 public:
     string name;
     string desc;
-    bool isLocked;
     int level;
     int maxLevel;
     int price;
@@ -32,13 +31,12 @@ public:
     time_t startTime;
     int secondsToGo;
     float timeToShow;
-    Job(string name_, string desc_, int level_, int maxLevel_, int price_, int reward_,int secondsToGo_, bool isLocked_) {
+    Job(string name_, string desc_, int price_, int reward_,int secondsToGo_) {
+        level = 0;
+        maxLevel = 20;
         name = name_;
         desc = desc_;
-        level = level_;
-        maxLevel = maxLevel_;
         price = price_;
-        isLocked = isLocked_;
         reward = reward_;
         secondsToGo = secondsToGo_;
         timeToShow = 0;
@@ -50,7 +48,7 @@ public:
     }
     void CheckWorkDone()
     {
-        if (!isLocked)
+        if (level!=0)
         {
             int currentTime = time(NULL);
             
@@ -73,23 +71,23 @@ class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Biznes1", "Zwykly biznes", 0, 500, 500, 1, 5, false);
-    Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j1 = Job("Biznes1", "Zwykly biznes", 1, 1, 5);
+    /*Job j2 = Job("Biznes2", "Zwykly biznes", 0, 500, 500, 1, 5, true);
     Job j3 = Job("Biznes3", "Zwykly biznes", 0, 500, 500, 1, 5, true);
     Job j4 = Job("Biznes4", "Zwykly biznes", 0, 500, 500, 1, 5, true);
     Job j5 = Job("Biznes5", "Zwykly biznes", 0, 500, 500, 1, 5, true);
     Job j6 = Job("Biznes6", "Zwykly biznes", 0, 500, 500, 1, 5, true);
     Job j7 = Job("Biznes7", "Zwykly biznes", 0, 500, 500, 1, 5, true);
-    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, 1, 5, true);
+    Job j8 = Job("Biznes8", "Zwykly biznes", 0, 500, 500, 1, 5, true);*/
     Game() {
         jobs.push_back(j1);
-        jobs.push_back(j2);
+        /*jobs.push_back(j2);
         jobs.push_back(j3);
         jobs.push_back(j4);
         jobs.push_back(j5);
         jobs.push_back(j6);
         jobs.push_back(j7);
-        jobs.push_back(j8);
+        jobs.push_back(j8);*/
     }
     void Menu() {
         cout << "IT CAPITALIST \n";
@@ -98,7 +96,7 @@ public:
         {
             cout << it->name << endl;
             cout << it->desc << endl;
-            if (!it->isLocked)
+            if (it->level!=0)
             {
                 cout << "PRICE: " << it->price << endl;
                 cout << "TIME: " << it->timeToShow << endl;
@@ -118,7 +116,6 @@ public:
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                   it->isLocked = false;
                    //it->price;
                    it->level = 100;
 
@@ -128,9 +125,8 @@ public:
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                if (it->isLocked)
+                if (it->level == 0)
                 {
-                    it->isLocked = false;
                     //it->price;
                     it->level = 1;
                 }
