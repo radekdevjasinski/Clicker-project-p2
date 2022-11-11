@@ -94,10 +94,9 @@ public:
     }
     string LoadingBar(float time) {
         string loading = "----------", hasz = "";
-        float temp = round(time * 10) / 10;
         int y =0;
 
-        for (float i = 0; i <= temp; i += 0.1)
+        for (int i = 1; i <= time*10; i ++)
         {
             y++;
             hasz.append("#");
