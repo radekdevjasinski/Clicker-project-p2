@@ -1,6 +1,7 @@
 #include<cstdio>
 #include<iostream>
 #include<ctime>
+#include <cmath>
 #include<stdlib.h>
 #include<windows.h>
 #include<list>
@@ -71,10 +72,10 @@ class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Dropshiping", "Kupuj taniej sprzedaj drozej", 1, 1, 5);
-    Job j2 = Job("Webmaster", "Tworzenie slabych stron na wordpressie", 20, 5, 10);
+    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 1, 1, 5);
+    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10);
     Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30);
-    Job j4 = Job("Service assistant", "Praca w serwisie", 100, 25, 45);
+    Job j4 = Job("Service assistant", "Pracujesz w serwisie u wujka", 100, 25, 45);
     Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60);
     Job j6 = Job("Unity designer", "Robisz podrobki gier, tyko gorzej", 2000, 500, 75);
     Job j7 = Job("Bitcoin trader", "Kopiesz bitcoina na starym laptopie babci", 10000, 1000, 90);
@@ -89,6 +90,20 @@ public:
         jobs.push_back(j7);
         jobs.push_back(j8);
     }
+    string LoadingBar(float time) {
+        string loading = "----------", hasz = "";
+        float temp = round(time * 10) / 10;
+        int y =0;
+
+        for (float i = 0; i <= temp; i += 0.1)
+        {
+            y++;
+            hasz.append("#");
+            
+        }
+        loading.replace(0, y, hasz);
+        return loading;
+    }
     void Menu() {
         cout << "IT CAPITALIST \n";
         cout << "CASH: " << money.cash << " CPU's \n\n";
@@ -99,7 +114,7 @@ public:
             if (it->level!=0)
             {
                 cout << "PRICE: " << it->price << endl;
-                cout << "TIME: " << it->timeToShow << endl;
+                cout << "TIME: (" << it->secondsToGo << "s) [" << LoadingBar(it->timeToShow) << "]" << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
             }
             else
