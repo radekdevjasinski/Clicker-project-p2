@@ -8,13 +8,17 @@
 #include<string>
 #include<limits>
 using namespace std;
+int roundToInt(float value)
+{
+    return (int)(value + 0.5);
+}
 class Money
 {
 public:
     int cash;
     Money() 
     {
-        cash = 1;
+        cash = 5;
     }
     void MoneyAdd(int cash_) 
     {
@@ -28,65 +32,80 @@ public:
 
     int level;
     int maxLevel;
-    int price;
-    int reward;
+    float price;
+    float reward;
 
     time_t startTime;
-    int secondsToGo;
+    float seconds;
     float timeToShow;
 
-    float rewardFactor;
-    float secondsFactor;
+    float priceStart;
+    float rewardStart;
+    float secondsStart;
 
-    Job(string name_, string desc_, int price_, int reward_,int secondsToGo_, float rewardFactor_, float secondsFactor_) 
+    float priceEnd;
+    float rewardEnd;
+    float secondsEnd;
+
+    Job(string name_, string desc_, float price_, float reward_, float seconds_, float priceEnd_, float rewardEnd_, float secondsEnd_)
     {
         name = name_;
         desc = desc_;
         
-        level = 0;
+        level = -1;
         maxLevel = 20;
         price = price_;
         
         reward = reward_;
-        secondsToGo = secondsToGo_;
+        seconds = seconds_;
         timeToShow = 0;
 
-        rewardFactor = rewardFactor_;
-        secondsFactor = secondsFactor_;
+        priceStart = price;
+        rewardStart = reward;
+        secondsStart = seconds;
+
+        priceEnd = priceEnd_;
+        rewardEnd = rewardEnd_;
+        secondsEnd = secondsEnd_;
     }
     void CheckWorkDone()
     {
-        if (level!=0)
+        if (level>=0)
         {
             int currentTime = time(NULL);
 
             int secondsPassed = (currentTime - startTime);
-            int CirclesDoneInt = secondsPassed / secondsToGo;
-            float CirclesDoneFloat = secondsPassed % secondsToGo;
-            int secondsSpare = secondsPassed - CirclesDoneInt * secondsToGo;
-            
+            int CirclesDoneInt = secondsPassed / roundToInt(seconds);
+            float CirclesDoneFloat = secondsPassed % roundToInt(seconds);
+            int secondsSpare = secondsPassed - CirclesDoneInt * roundToInt(seconds);
             if (CirclesDoneInt >= 1)
             {
-                money.MoneyAdd(reward * CirclesDoneInt);
+                money.MoneyAdd(roundToInt(reward) * CirclesDoneInt);
                 startTime = currentTime - secondsSpare;
             }
-            timeToShow = (float)(CirclesDoneFloat / secondsToGo);
+            timeToShow = (float)(CirclesDoneFloat / roundToInt(seconds));
         }
         
+    }
+    void LevelUp() 
+    {
+        price = priceStart + ((priceEnd - priceStart) / maxLevel) * level;
+        reward = rewardStart + ((rewardEnd - rewardStart) / maxLevel) * level;
+        seconds = secondsStart - ((secondsStart - secondsEnd) / maxLevel) * level;
     }
 };
 class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 1, 1, 5, 1, 1);
-    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10, 1, 1);
-    Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30, 1, 1);
-    Job j4 = Job("Service assistant", "Pracujesz w serwisie u wujka", 100, 25, 45, 1, 1);
-    Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60, 1, 1);
-    Job j6 = Job("Unity designer", "Robisz podrobki gier, tyko gorzej", 2000, 500, 75, 1, 1);
-    Job j7 = Job("Bitcoin trader", "Kopiesz bitcoina na starym laptopie babci", 10000, 1000, 90, 1, 1);
-    Job j8 = Job("Owner of twitter", "Przywracasz wolnosc slowa", 100000, 10000, 120, 1, 1);
+    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 2, 1, 5, 20, 10, 1);
+    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10, 100, 20, 10);
+    Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30, 250, 100, 15);
+    Job j4 = Job("Service assistant", "Pracujesz w serwisie u wujka", 100, 25, 45, 500, 150, 27);
+    Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60, 1000, 500, 35);
+    Job j6 = Job("Unity designer", "Robisz podrobki gier, tyko gorzej", 2000, 500, 75, 6000, 1500, 55);
+    Job j7 = Job("Bitcoin trader", "Kopiesz bitcoina na starym laptopie babci", 10000, 1000, 90, 60000, 3000, 75);
+    Job j8 = Job("Owner of twitter", "Przywracasz wolnosc slowa", 100000, 10000, 120, 500000, 300000, 90);
     Game() {
         jobs.push_back(j1);
         jobs.push_back(j2);
@@ -116,17 +135,17 @@ public:
         {
             cout << it->name << endl;
             cout << it->desc << endl;
-            if (it->level!=0)
+            if (it->level!=-1)
             {
-                cout << "PRICE: " << it->price << endl;
-                cout << "REWARD: " << it->reward << endl;
-                cout << "TIME: (" << it->secondsToGo << "s) [" << LoadingBar(it->timeToShow) << "]" << endl;
+                cout << "PRICE: " << roundToInt(it->price) << endl;
+                cout << "REWARD: " << roundToInt(it->reward)<< endl;
+                cout << "TIME: (" << roundToInt(it->seconds) << "s) [" << LoadingBar(it->timeToShow) << "]" << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
             }
             else
             {
                cout << "LOCKED\n";
-               cout << "PRICE: " << it->price << "\n\n";
+               cout << "PRICE: " << roundToInt(it->price) << "\n\n";
             }
             
         }
@@ -138,21 +157,23 @@ public:
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                   if (it->level==0)
+                   if (it->level==-1)
                    {
                         it->startTime = time(NULL);
                    }
                    it->level = 20;
-                   cout << "\nnCheated\n" << endl;
+                   it->LevelUp();
+                   cout << "\nCheated\n" << endl;
             }
         }
         else if (code == cheatCodes[1])
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                if (it->level == 0)
+                if (it->level == -1)
                 {
-                    it->level = 1;
+                    it->level = 0;
+                    it->LevelUp();
                     it->startTime = time(NULL);
                     cout << "\nCheated\n" << endl;
                 }
@@ -160,11 +181,12 @@ public:
         }
         else if (code == cheatCodes[2])
         {
-            if (jobs.begin()->level == 0)
+            if (jobs.begin()->level == -1)
             {
                 jobs.begin()->startTime = time(NULL);
             }
-            jobs.begin()->level = 20;
+            it->level = 20;
+            jobs.begin()->LevelUp();
             cout << "\nCheated\n" << endl;
         }
         else if (code.substr(0, 3) == "buy") 
@@ -176,20 +198,19 @@ public:
             {
                 if (i == number)
                 {
-                    if (money.cash >= it->price)
+                    if (money.cash >= it->price && it->level+1 <= it->maxLevel)
                     {
-                        cout << money.cash;
-                        if (it->level == 0)
+                        if (it->level == -1)
                         {
                             it->startTime = time(NULL);
                             cout << "\nWlasnie kupiles " << number + 1 << " interes!\n" << endl;
                         }
-                        if (it->level != 0) {
+                        else{
                             cout << "\nWlasnie ulepszyles " << number + 1 << " interes!\n" << endl;
                         }
-                        it->level += 1;
-                        money.cash -= it->price;
-                        cout << money.cash;
+                        it->level++;
+                        it->LevelUp();
+                        money.cash -= roundToInt(it->price);
                     }
                 }
                 i++;
