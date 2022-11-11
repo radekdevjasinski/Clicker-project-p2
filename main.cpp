@@ -109,36 +109,38 @@ public:
             
         }
     }
-    void CheatCodesGame(string code)
+    void Commands(string code)
     {
-        string codes[] = { "AllDone", "UnlockAll", "FirstDay" };
-        if (code == codes[0]) 
+        string cheatCodes[] = { "alldone", "unlockall", "firstday" };
+        if (code == cheatCodes[0])
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
-                   //it->price;
                    it->level = 100;
 
             }
         }
-        else if (code == codes[1])
+        else if (code == cheatCodes[1])
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
                 if (it->level == 0)
                 {
-                    //it->price;
                     it->level = 1;
                 }
             }
         }
-        else if (code == "FirstDay")
+        else if (code == cheatCodes[2])
         {
             jobs.begin()->level = 500;
         }
-        
+        else if (code.substr(0, 7) == "upgrade") 
+        {
+            char index = code.back();
+            int number = (int)index;
+            cout << index;
+        }
     }
-
     void ClearScreen()
     {
         cout << string(100, '\n');
@@ -153,14 +155,14 @@ public:
 }game;
 
 int main() {
-    string cheats;
+    string command;
     for (;;) {
         game.Menu();
         do {
             cout << "Press ENTER" << endl;
-            getline(cin, cheats);
-            game.CheatCodesGame(cheats);      
-        } while (cheats.length() != 0);
+            getline(cin, command);
+            game.Commands(command);      
+        } while (command.length() != 0);
         game.ClearScreen();
         game.CheckWorkDone();
     }
