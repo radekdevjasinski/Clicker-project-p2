@@ -136,6 +136,7 @@ public:
             {
                    it->level = 100;
                    it->StartWork();
+                   cout << "\nnCheated\n" << endl;
             }
         }
         else if (code == cheatCodes[1])
@@ -146,6 +147,7 @@ public:
                 {
                     it->level = 1;
                     it->StartWork();
+                    cout << "\nCheated\n" << endl;
                 }
             }
         }
@@ -153,6 +155,7 @@ public:
         {
             jobs.begin()->level = 500;
             jobs.begin()->StartWork();
+            cout << "\nCheated\n" << endl;
         }
         else if (code.substr(0, 3) == "buy") 
         {
@@ -167,7 +170,11 @@ public:
                     {
                         if (it->level == 0)
                         {
+                            cout << "\nWlasnie kupiles " << number + 1 << " interes!\n" << endl;
                             it->StartWork();
+                        }
+                        if (it->level != 0) {
+                            cout << "\nWlasnie ulepszyles " << number + 1 << " interes!\n" << endl;
                         }
                         it->level += 1;
                         money.cash -= it->price;
@@ -175,6 +182,7 @@ public:
                 }
                 i++;
             }
+            
         }
     }
     void ClearScreen()
