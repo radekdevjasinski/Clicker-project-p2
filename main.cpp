@@ -98,8 +98,8 @@ class Game {
 public:
     list<Job> jobs;
     list<Job>::iterator it;
-    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 2, 1, 5, 20, 10, 1);
-    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10, 100, 20, 10);
+    Job j1 = Job("Dropshiping", "Kupujesz taniej sprzedajesz drozej", 2, 1, 5, 20, 20, 1);
+    Job j2 = Job("Webmaster", "Tworzysz slabe strony na wordpressie", 20, 5, 10, 100, 20, 5);
     Job j3 = Job("Computer technical support", "Wlaczasz i wylaczasz do skutku", 50, 10, 30, 250, 100, 15);
     Job j4 = Job("Service assistant", "Pracujesz w serwisie u wujka", 100, 25, 45, 500, 150, 27);
     Job j5 = Job("Master programmer", "Umiesz uzywac juz petli for i while", 500, 100, 60, 1000, 500, 35);
@@ -203,14 +203,11 @@ public:
                         if (it->level == -1)
                         {
                             it->startTime = time(NULL);
-                            cout << "\nYou just bought " << number + 1 << " business!\n" << endl;
                         }
-                        else{
-                            cout << "\nWlasnie ulepszyles " << number + 1 << " interes!\n" << endl;
-                        }
+                        money.cash -= roundToInt(it->price);
                         it->level++;
                         it->LevelUp();
-                        money.cash -= roundToInt(it->price);
+                        cout << "\nYou just bought " << number + 1 << " business!\n" << endl;
                     }
                 }
                 i++;
