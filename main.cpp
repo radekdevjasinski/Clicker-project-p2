@@ -134,11 +134,26 @@ public:
         {
             jobs.begin()->level = 500;
         }
-        else if (code.substr(0, 7) == "upgrade") 
+        else if (code.substr(0, 3) == "buy") 
         {
             char index = code.back();
-            int number = (int)index;
-            cout << index;
+            int number = index - '1';
+            int i = 0;
+            for (it = jobs.begin(); it != jobs.end(); ++it)
+            {
+                cout << number << "," << i<<endl;
+                if (i == number)
+                {
+                    cout << "upgraded";
+                    if (money.cash >= it->price)
+                    {
+                        cout << "upgraded2";
+                        it->level += 1;
+                        money.cash -= it->price;
+                    }
+                }
+                i++;
+            }
         }
     }
     void ClearScreen()
