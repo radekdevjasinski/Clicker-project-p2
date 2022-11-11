@@ -143,8 +143,8 @@ public:
                         it->startTime = time(NULL);
                    }
                    it->level = 20;
-                   cout << "\nnCheated\n" << endl;
             }
+            cout << "\nCheated\n" << endl;
         }
         else if (code == cheatCodes[1])
         {
@@ -182,10 +182,10 @@ public:
                         if (it->level == 0)
                         {
                             it->startTime = time(NULL);
-                            cout << "\nWlasnie kupiles " << number + 1 << " interes!\n" << endl;
+                            cout << "\nYou just bought " << number + 1 << " business!\n" << endl;
                         }
                         if (it->level != 0) {
-                            cout << "\nWlasnie ulepszyles " << number + 1 << " interes!\n" << endl;
+                            cout << "\nYou just upgraded " << number + 1 << " business!\n" << endl;
                         }
                         it->level += 1;
                         money.cash -= it->price;
