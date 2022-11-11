@@ -42,6 +42,13 @@ public:
         secondsToGo = secondsToGo_;
         timeToShow = 0;
     }
+    void StartWork() 
+    {
+        if (level > 0)
+        {
+            startTime = time(NULL);
+        }
+    }
     void CheckWorkDone()
     {
         if (level!=0)
@@ -128,7 +135,7 @@ public:
             for (it = jobs.begin(); it != jobs.end(); ++it)
             {
                    it->level = 100;
-
+                   it->StartWork();
             }
         }
         else if (code == cheatCodes[1])
@@ -138,12 +145,14 @@ public:
                 if (it->level == 0)
                 {
                     it->level = 1;
+                    it->StartWork();
                 }
             }
         }
         else if (code == cheatCodes[2])
         {
             jobs.begin()->level = 500;
+            jobs.begin()->StartWork();
         }
         else if (code.substr(0, 3) == "buy") 
         {
@@ -158,7 +167,7 @@ public:
                     {
                         if (it->level == 0)
                         {
-                            it->startTime = time(NULL);
+                            it->StartWork();
                         }
                         it->level += 1;
                         money.cash -= it->price;
