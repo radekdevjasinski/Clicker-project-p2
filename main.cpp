@@ -12,6 +12,31 @@ int roundToInt(float value)
 {
     return (int)(value + 0.5);
 }
+string WriteComma(int tempmoney) {
+    int num = tempmoney;
+    int count = 0, d = 1;
+    string str = "";
+    if (num == 0)
+    {
+        str = "0";
+        return str;
+    }
+    while (tempmoney) {
+        tempmoney /= 10;
+        count++;
+        if (tempmoney) d *= 10;
+    }
+    tempmoney = num;
+
+    while (num) {
+        if (count-- % 3 == 0 and tempmoney != num) str += ",";
+
+        str += to_string(num / d);
+        num %= d;
+        d /= 10;
+    }
+    return str;
+}
 class Money
 {
 public:
@@ -23,31 +48,6 @@ public:
     void MoneyAdd(int cash_) 
     {
         cash += cash_;
-    }
-    string WriteMoney() {
-        int num = cash;
-        int count = 0, d = 1;
-        string str = "";
-        if (num == 0)
-        {
-            str = "0";
-            return str;
-        }
-        while (cash) {
-            cash /= 10;
-            count++;
-            if (cash) d *= 10;
-        }
-        cash = num;
-
-        while (num) {
-            if (count-- % 3 == 0 and cash != num) str += ",";
-
-            str += to_string(num / d);
-            num %= d;
-            d /= 10;
-        }
-        return str;
     }
 }money;
 class Job {
@@ -155,7 +155,7 @@ public:
     }
     void Menu() {
         cout << "IT CAPITALIST \n";
-        cout << "CASH: " << money.WriteMoney() << " CPU's \n\n"; //money.cash
+        cout << "CASH: " << WriteComma(money.cash) << " CPU's \n\n"; //money.cash
         for (it = jobs.begin(); it != jobs.end(); ++it)
         {
             cout << it->name << endl;
@@ -163,7 +163,7 @@ public:
             if (it->level!=-1)
             {
                 cout << "PRICE: " << roundToInt(it->price) << endl;
-                cout << "REWARD: " << roundToInt(it->reward)<< endl;
+                cout << "REWARD: " << roundToInt(it->reward) << endl;
                 cout << "TIME: (" << roundToInt(it->seconds) << "s) [" << LoadingBar(it->timeToShow) << "]" << endl;
                 cout << "LEVEL: " << it->level << " / " << it->maxLevel << "\n\n";
             }
