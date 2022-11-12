@@ -28,6 +28,11 @@ public:
         int num = cash;
         int count = 0, d = 1;
         string str = "";
+        if (num == 0)
+        {
+            str = "0";
+            return str;
+        }
         while (cash) {
             cash /= 10;
             count++;
