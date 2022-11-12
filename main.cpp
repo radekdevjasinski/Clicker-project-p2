@@ -24,6 +24,26 @@ public:
     {
         cash += cash_;
     }
+    string WriteMoney() {
+        int num = cash;
+        int count = 0, d = 1;
+        string str = "";
+        while (cash) {
+            cash /= 10;
+            count++;
+            if (cash) d *= 10;
+        }
+        cash = num;
+
+        while (num) {
+            if (count-- % 3 == 0 and cash != num) str += ",";
+
+            str += to_string(num / d);
+            num %= d;
+            d /= 10;
+        }
+        return str;
+    }
 }money;
 class Job {
 public:
@@ -130,7 +150,7 @@ public:
     }
     void Menu() {
         cout << "IT CAPITALIST \n";
-        cout << "CASH: " << money.cash << " CPU's \n\n";
+        cout << "CASH: " << money.WriteMoney() << " CPU's \n\n"; //money.cash
         for (it = jobs.begin(); it != jobs.end(); ++it)
         {
             cout << it->name << endl;
@@ -152,7 +172,7 @@ public:
     }
     void Commands(string code)
     {
-        string cheatCodes[] = { "alldone", "unlockall", "firstday" };
+        string cheatCodes[] = { "alldone", "unlockall", "firstday", "elonmusk"};
         if (code == cheatCodes[0])
         {
             for (it = jobs.begin(); it != jobs.end(); ++it)
@@ -187,6 +207,11 @@ public:
             }
             it->level = 20;
             jobs.begin()->LevelUp();
+            cout << "\nCheated\n" << endl;
+        }
+        else if (code == cheatCodes[3])
+        {
+            money.MoneyAdd(100000);
             cout << "\nCheated\n" << endl;
         }
         else if (code.substr(0, 3) == "buy") 
